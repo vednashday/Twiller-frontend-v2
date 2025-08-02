@@ -1,0 +1,146 @@
+.sidebar {
+  border-right: 1px solid var(--twitter-background);
+  padding: 10px;
+  height: 96%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 225px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  min-width: 45px;
+  
+  
+}
+.sidebar__twitterIcon {
+  color: var(--twitter-color);
+  font-size: 35px !important;
+  margin-left: 10px;
+}
+
+.sidebar__tweet {
+  background-color: var(--twitter-color) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 900 !important;
+  text-transform: inherit !important;
+  border-radius: 30px !important;
+  height: 50px !important;
+   
+}
+
+
+.Profile__info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3px 5px;
+  border-radius: 999999px;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+
+.user__info {
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  
+
+}
+
+.long-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+
+.Profile__info:hover{
+  background-color: #e8f5fe;
+  color: var(--twitter-color);
+}
+
+.user__info > h4 {
+  font-size: 14px;
+}
+
+.user__info > h5 {
+  font-size: 12px;
+  opacity: 0.6;
+  
+}
+
+.subUser__info {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tcont {
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.tweet-button-wrapper .tweet-full {
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 90%;
+  display: inline-flex;
+}
+
+.tweet-button-wrapper .tweet-icon {
+  display: none;
+}
+
+
+/* Medium screens (Tablet): collapse to icons only */
+@media screen and (max-width: 1150px) {
+  .sidebar {
+    width: 90px;
+    align-items: center;
+  }
+
+  .sidebarOption__text {
+    display: none;
+  }
+  .tweet-button-wrapper .tweet-full {
+    display: none !important;
+  }
+  .tweet-button-wrapper .tweet-icon {
+    display: inline-flex !important;
+    padding: 10px 15px;
+    height: 35px;
+    border-radius: 9999px;
+    background-color: var(--twitter-color);
+    color: white;
+    margin: 5px;
+  }
+
+  .sidebar__tweet {
+    display: none;
+  }
+
+  .Profile__info .user__info,
+  .Profile__info .tcont,
+  .Profile__info .user__info h4,
+  .Profile__info .user__info h5 {
+    display: none;
+  }
+}
+
+/* Small screens (Mobile): hide sidebar completely */
+@media screen and (max-width: 720px) {
+  .sidebar {
+    width: 17.8vw;
+    margin: 0px;
+    
+  }
+}

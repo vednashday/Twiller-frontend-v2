@@ -1,0 +1,11 @@
+{
+  "welcome": "Bienvenue sur Twiller",
+  "post": "Publier",
+  "logout": "Se déconnecter",
+  "login": "Connexion",
+  "signup": "S'inscrire",
+  "language": "Langue",
+  "switch_language": "Changer de langue",
+  "verify_otp": "Vérifier le code",
+  "send_otp": "Envoyer le code"
+}

@@ -1,0 +1,21 @@
+.audio-recorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.audio-recorder canvas {
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.audio-recorder button {
+  margin-top: 10px;
+  background: #1da1f2;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}

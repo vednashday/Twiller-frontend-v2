@@ -1,0 +1,44 @@
+.sidebarOptions {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  height: 35px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebarOptions:hover {
+  background-color: #e8f5fe;
+  color: var(--twitter-color);
+}
+
+.sidebarOptions .MuiSvgIcon-root {
+  font-size: 28px;
+}
+
+.sidebarOptions h2 {
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 15px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.done__icon {
+  color: var(--twitter-color) !important;
+}
+
+/* Tablet: Collapse text */
+@media screen and (max-width: 1150px) {
+  .sidebarOptions h2 {
+    display: none;
+  }
+}
+
+/* Mobile: Hide tweet button */
+@media screen and (max-width: 688px) {
+  .sidebar__tweet {
+    display: none;
+  }
+}

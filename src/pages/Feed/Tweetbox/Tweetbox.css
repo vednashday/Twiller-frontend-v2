@@ -1,0 +1,112 @@
+.tweetbox-container {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.tweetbox-form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.tweetbox-left {
+  margin-right: 1rem;
+}
+.tweetbox_lastline{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tweetbox-right {
+  flex: 1;
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tweetbox-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tweetbox-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+.tweet-limit-info {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  text-align: right;
+  font-weight: 500;
+}
+
+
+.tweetbox-preview {
+  width: fit-content;
+  max-height: 600px;
+  height: auto;
+  border-radius: 20px;
+  object-fit: contain;
+  object-position: left;
+}
+
+.tweetbox-recorder {
+  margin-bottom: 0.5rem;
+}
+
+.tweetbox-otp {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tweetbox-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tweetbox-button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  text-transform: none;
+  padding: 0.6rem 1.5rem;
+  background-color: #1DA1F2;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(29, 161, 242, 0.2);
+}
+
+.tweetbox-button:hover {
+  background-color: #1A91DA;
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+}
+
+.tweetbox-button:disabled {
+  background-color: #AAB8C2;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+

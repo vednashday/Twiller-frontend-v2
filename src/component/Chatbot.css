@@ -1,0 +1,195 @@
+.chatbot-icon {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background-color: #ffffff;
+  border-radius: 20%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px #1da1f2;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.5s ease;
+  color: var(--twitter-color);
+
+}
+
+.chatbot-icon:hover {
+  background-color: var(--twitter-color);
+  color: white;
+}
+
+/* Chat container */
+.chatbot-container {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 360px;
+  max-height: 520px;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-window {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #f5f8fa;
+  display: flex;
+  flex-direction: column;
+}
+
+/* User and Bot messages */
+.chat-message {
+  margin: 10px 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user-msg {
+  align-self: flex-end;
+  background-color: #d1edff;
+  color: #0f1419;
+  margin-left: auto;
+}
+
+.bot-msg {
+  align-self: flex-start;
+  background-color: #e6ecf0;
+  color: #0f1419;
+  margin-right: auto;
+}
+
+.bot-msg.intro {
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #e8f5fd;
+  border-left: 4px solid #1da1f2;
+}
+
+/* Tweet card */
+.tweet-card {
+  background: #ffffff;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  border: 1px solid #e6ecf0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+  line-height: 1.5;
+  width: fit-content;
+}
+
+.tweet-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tweet-header img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tweet-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.tweet-header strong {
+  font-weight: 600;
+  font-size: 14px;
+  color: #0f1419;
+}
+
+.tweet-header span {
+  font-size: 12px;
+  color: #536471;
+}
+
+.tweet-content {
+  margin: 6px 0;
+  color: #0f1419;
+}
+
+.tweet-image {
+  width: fit-content;
+  max-height: 180px;
+  object-fit: contain;
+  object-position: left;
+  border-radius: 12px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Chat input */
+.chat-input {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-top: 1px solid #e1e8ed;
+  background: #fff;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 24px;
+  outline: none;
+  font-size: 14px;
+  background: #f1f1f1;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input input:focus {
+  border-color: #1da1f2;
+  background: white;
+}
+
+.chat-input button {
+  background-color: #1da1f2;
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-input button:hover {
+  background-color: var(--twitter-color);
+}
+
+
+.sidebar__icon {
+  font-size: 35px !important;
+}
