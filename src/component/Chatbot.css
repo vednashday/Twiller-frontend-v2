@@ -15,7 +15,6 @@
   z-index: 1000;
   transition: background-color 0.5s ease;
   color: var(--twitter-color);
-
 }
 
 .chatbot-icon:hover {
@@ -101,7 +100,15 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   font-size: 14px;
   line-height: 1.5;
-  width: fit-content;
+  /* Use max-width for better responsiveness and containment */
+  max-width: 80%;
+}
+
+/* Fix for the audio element overflowing */
+.tweet-card audio {
+  width: 100%;
+  /* This prevents the audio player from overflowing its container */
+  max-width: 100%;
 }
 
 .tweet-header {
@@ -147,6 +154,7 @@
   border-radius: 12px;
   margin-top: 8px;
   border: 1px solid #ccc;
+  max-width: 100%;
 }
 
 /* Chat input */

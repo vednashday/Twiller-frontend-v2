@@ -48,6 +48,7 @@
   border: none;
   color: black;
   cursor: pointer;
+  margin: 0px;
 }
 .tweet-limit-info {
   font-size: 0.85rem;

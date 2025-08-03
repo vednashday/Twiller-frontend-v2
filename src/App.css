@@ -2,6 +2,12 @@ body {
   --twitter-color: #50b7f5;
   --twitter-background: #e6ecf0;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
 
 .app {
   display: flex;

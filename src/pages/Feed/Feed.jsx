@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./Feed.css";
 import Posts from "./Posts/Posts";
 import Tweetbox from "./Tweetbox/Tweetbox";
+import { useTranslation } from "react-i18next";
+
 const Feed = () => {
   const [post, setpost] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { t } = useTranslation();
+    
   useEffect(() => {
     setLoading(true);
     try {
@@ -25,12 +28,12 @@ const Feed = () => {
     <div className="feed">
       {loading ? (
         <div className="loader-inside-main">
-          <p>Loading profile...</p>
+          <p>{t("loading_profile")}</p>
           <div className="spinner" />
         </div>
       ) : (
       <><div className="feed__header">
-            <h2>Home</h2>
+            <h2>{t("Home")}</h2>
           </div><Tweetbox />
       {post.map((p) => (<Posts key={p._id} p={p} />))}
       </>

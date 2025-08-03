@@ -4,11 +4,13 @@ import "./ForgotPassword.css";
 import { toast } from "react-toastify";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ForgotPassword = () => {
+  const { t } = useTranslation(); 
   const [email, setEmail] = useState("");
   const [method, setMethod] = useState("email");
-  const [generatedPassword, setGeneratedPassword] = useState("");   // NEW
+  const [generatedPassword, setGeneratedPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -22,7 +24,6 @@ const ForgotPassword = () => {
       );
 
       if (method === "generate") {
-        // ✅ show password visibly
         setGeneratedPassword(data.message);
       } else {
         toast.success(data.message);
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
     } catch (err) {
       setGeneratedPassword("");
       if (err.response?.status === 429) {
-        toast.warning("You can only reset your password once per day.");
+        toast.warning(t("forgotPassword.dailyLimitWarning"));
       } else {
         toast.error(err.response?.data?.message || "An error occurred");
       }
@@ -46,16 +47,14 @@ const ForgotPassword = () => {
     <div className="forgot-container">
       <div className="forgot-box">
         <TwitterIcon style={{ color: "skyblue", fontSize: 40 }} />
-        <h2 className="forgot-heading">Forgot Your Password?</h2>
-        <p className="forgot-subheading">
-          Choose how you want to reset your password.
-        </p>
+        <h2 className="forgot-heading">{t("forgotPassword.title")}</h2>
+        <p className="forgot-subheading">{t("forgotPassword.subtitle")}</p>
 
         <form onSubmit={handleSubmit} className="form-box">
           <input
             type="email"
             className="forgot-input"
-            placeholder="Enter your email"
+            placeholder={t("forgotPassword.emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -71,19 +70,16 @@ const ForgotPassword = () => {
             }}
             disabled={isLoading}
           >
-            <option value="email">Send Reset Link via Email</option>
-            <option value="generate">Generate New Password</option>
+            <option value="email">{t("forgotPassword.selectMethodEmail")}</option>
+            <option value="generate">{t("forgotPassword.selectMethodGenerate")}</option>
           </select>
 
-          <p className="daily-limit-warning">
-            ⚠️ You can only reset your password once per day.
-          </p>
+          <p className="daily-limit-warning">{t("forgotPassword.dailyLimitWarning")}</p>
 
           <button type="submit" className="forgot-button" disabled={isLoading}>
-            {isLoading ? "Processing..." : "Reset Password"}
+            {isLoading ? t("forgotPassword.processing") : t("forgotPassword.resetButton")}
           </button>
 
-          {/* Visible password panel */}
           {generatedPassword && (
             <div
               style={{
@@ -103,7 +99,7 @@ const ForgotPassword = () => {
           )}
 
           <p className="back-to-login">
-            Remembered your password?
+            {t("forgotPassword.remembered")}
             <Link
               to="/login"
               style={{
@@ -113,7 +109,7 @@ const ForgotPassword = () => {
                 marginLeft: 5,
               }}
             >
-              Log In
+              {t("forgotPassword.login")}
             </Link>
           </p>
         </form>

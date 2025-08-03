@@ -5,45 +5,47 @@ import { useUserAuth } from "../../context/UserAuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import '../pages.css';
-
-const plans = [
-  {
-    name: "Free",
-    price: "₹0",
-    tweets: "1 Tweet/month",
-    badge: "FREE",
-    icon: <Send className="plan-icon" />,
-    planKey: "free",
-  },
-  {
-    name: "Bronze",
-    price: "₹100",
-    tweets: "3 Tweets/month",
-    badge: "BRONZE",
-    icon: <Send className="plan-icon" />,
-    planKey: "bronze",
-  },
-  {
-    name: "Silver",
-    price: "₹300",
-    tweets: "5 Tweets/month",
-    badge: "SILVER",
-    icon: <CheckCircle className="plan-icon" />,
-    planKey: "silver",
-  },
-  {
-    name: "Gold",
-    price: "₹1000",
-    tweets: "Unlimited Tweets",
-    badge: "GOLD",
-    icon: <Infinity className="plan-icon" />,
-    planKey: "gold",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const SubscriptionPlans = () => {
+  const { t } = useTranslation();
   const { user, mongoUser, setMongoUser } = useUserAuth();
   const [loadingPlan, setLoadingPlan] = useState("");
+
+  const plans = [
+    {
+      name: t("plan_free_name"),
+      price: "₹0",
+      tweets: `1 ${t("tweets_per_month")}`,
+      badge: t("plan_free_name").toUpperCase(),
+      icon: <Send className="plan-icon" />,
+      planKey: "free",
+    },
+    {
+      name: t("plan_bronze_name"),
+      price: "₹100",
+      tweets: `3 ${t("tweets_per_month")}`,
+      badge: t("plan_bronze_name").toUpperCase(),
+      icon: <Send className="plan-icon" />,
+      planKey: "bronze",
+    },
+    {
+      name: t("plan_silver_name"),
+      price: "₹300",
+      tweets: `5 ${t("tweets_per_month")}`,
+      badge: t("plan_silver_name").toUpperCase(),
+      icon: <CheckCircle className="plan-icon" />,
+      planKey: "silver",
+    },
+    {
+      name: t("plan_gold_name"),
+      price: "₹1000",
+      tweets: t("unlimited_tweets"),
+      badge: t("plan_gold_name").toUpperCase(),
+      icon: <Infinity className="plan-icon" />,
+      planKey: "gold",
+    },
+  ];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,10 +60,10 @@ const SubscriptionPlans = () => {
     fetchUserData();
   }, [user, setMongoUser]);
 
-  if (!user || !mongoUser) return <p>Loading...</p>;
+  if (!user || !mongoUser) return <p>{t("loading")}</p>;
 
   const handleSubscribe = async (plan) => {
-    const confirm = window.confirm(`Proceed to pay for the ${plan.toUpperCase()} plan?`);
+    const confirm = window.confirm(t("proceed_to_pay_for_plan", { plan: plan.toUpperCase() }));
     if (!confirm) return;
 
     setLoadingPlan(plan);
@@ -78,8 +80,8 @@ const SubscriptionPlans = () => {
         key: process.env.REACT_APP_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
-        name: "Twiller",
-        description: `${plan.toUpperCase()} Plan Subscription`,
+        name: t("twiller_app_name"),
+        description: t("plan_subscription_description", { plan: plan.toUpperCase() }),
         order_id: data.orderId,
         handler: async function (response) {
           try {
@@ -89,13 +91,12 @@ const SubscriptionPlans = () => {
               paymentId: response.razorpay_payment_id,
             });
 
-            // ✅ Fetch updated mongo user
             const userRes = await axios.get(`https://twiller-v2.onrender.com/loggedinuser?email=${user.email}`);
             setMongoUser(userRes.data);
 
-            toast.success(`Payment for ${plan.toUpperCase()} successful!`);
+            toast.success(t("payment_for_plan_successful", { plan: plan.toUpperCase() }));
           } catch (error) {
-            toast.error("Payment succeeded, but subscription update failed.");
+            toast.error(t("payment_succeeded_but_update_failed"));
             console.error(error);
           }
         },
@@ -110,7 +111,7 @@ const SubscriptionPlans = () => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Payment not allowed at this time.");
+      toast.error(t(err.response?.data?.message || "payment_not_allowed"));
       console.error(err);
     } finally {
       setLoadingPlan("");
@@ -119,12 +120,12 @@ const SubscriptionPlans = () => {
 
   return (
     <div className="plans-container">
-      <h2 className="plans-title">Choose Your Plan</h2>
+      <h2 className="plans-title">{t("choose_your_plan")}</h2>
       <div className="plans-grid">
         {plans.map((plan) => {
           const isCurrentPlan = mongoUser?.subscription === plan.planKey;
           return (
-            <div key={plan.name} className="plan-card">
+            <div key={plan.planKey} className="plan-card">
               <div className="card-content">
                 <div className="plan-header">
                   {plan.icon}
@@ -139,10 +140,10 @@ const SubscriptionPlans = () => {
                   disabled={isCurrentPlan || loadingPlan === plan.planKey}
                 >
                   {isCurrentPlan
-                    ? "Current Plan"
+                    ? t("current_plan")
                     : loadingPlan === plan.planKey
-                    ? "Processing..."
-                    : "Subscribe"}
+                    ? t("processing")
+                    : t("subscribe")}
                 </button>
               </div>
             </div>

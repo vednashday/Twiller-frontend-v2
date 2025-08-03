@@ -6,6 +6,7 @@ import { IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./Editprofile.css";
+import { t } from "i18next";
 
 const style = {
   position: "absolute",
@@ -30,7 +31,7 @@ function Editchild({ dob, setdob }) {
   return (
     <React.Fragment>
       <div className="birthdate-section" onClick={handleopen}>
-        <span>Edit</span>
+        <span className="edit-btn">{t("add")}</span>
       </div>
       <Modal
         hideBackdrop
@@ -41,12 +42,9 @@ function Editchild({ dob, setdob }) {
       >
         <Box sx={{ ...style, width: 300, height: 300 }}>
           <div className="text">
-            <h2>Edit date of birth</h2>
+            <h2>{t("editDob")}</h2>
             <p>
-              This can only be changed a few times
-              <br />
-              Make sure you enter the age of the <br />
-              person using the account.{" "}
+              {t("dobInfo")}
             </p>
             <input type="date" onChange={(e) => setdob(e.target.value)} />
             <Button
@@ -55,7 +53,7 @@ function Editchild({ dob, setdob }) {
                 setopen(false);
               }}
             >
-              Done
+              {t("done")}
             </Button>
           </div>
         </Box>
@@ -127,7 +125,7 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
         }}
         className="Edit-profile-btn"
       >
-        Edit profile
+        {t("editProfile")}
       </button>
       <Modal
         open={open}
@@ -139,14 +137,14 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             <IconButton onClick={() => setopen(false)}>
               <CloseIcon />
             </IconButton>
-            <h2 className="header-title">Edit Profile</h2>
-            <button className="save-btn" onClick={handlesave}>Save</button>
+            <h2 className="header-title">{t("editProfile")}</h2>
+            <button className="save-btn" onClick={handlesave}>{t("save")}</button>
           </div>
           <form className="fill-content">
             <TextField
               className="text-field"
               fullWidth
-              label="Name"
+              label={t("name")}
               id="fullWidth"
               variant="filled"
               onChange={(e) => setname(e.target.value)}
@@ -155,7 +153,7 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             <TextField
               className="text-field"
               fullWidth
-              label="Username"
+              label={t("username")}
               id="fullWidth"
               variant="filled"
               onChange={(e) => setusername(e.target.value)}
@@ -164,7 +162,7 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             <TextField
               className="text-field"
               fullWidth
-              label="Bio"
+              label={t("bio")}
               id="fullWidth"
               variant="filled"
               onChange={(e) => setbio(e.target.value)}
@@ -173,7 +171,7 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             <TextField
               className="text-field"
               fullWidth
-              label="Location"
+              label={t("location")}
               id="fullWidth"
               variant="filled"
               onChange={(e) => setlocation(e.target.value)}
@@ -184,7 +182,7 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             <TextField
               className="text-field"
               fullWidth
-              label="Website"
+              label={t("website")}
               id="fullWidth"
               variant="filled"
               onChange={(e) => setwebsite(e.target.value)}
@@ -194,18 +192,17 @@ const Editprofile = ({ user, loggedinuser, refetchUser }) => {
             />
           </form>
           <div className="birthdate-section">
-            <p>Birth Date</p>
-            <p>.</p>
+            <p>{t("birthDate")}</p>
             <Editchild dob={dob} setdob={setdob} />
           </div>
           <div className="last-section">
             {loggedinuser?.dob ? (
               <h2>{loggedinuser?.dob}</h2>
             ) : (
-              <h2>{dob ? dob : "Add your date of birth"}</h2>
+              <h2>{dob ? dob : t("addDob")}</h2>
             )}
             <div className="last-btn">
-              <h2>Switch to Professional</h2>
+              <h2>{t("switchToProfessional")}</h2>
               <ChevronRightIcon />
             </div>
           </div>

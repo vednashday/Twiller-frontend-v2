@@ -1,4 +1,3 @@
-// AudioRecorder.jsx
 import React, {
   useEffect,
   useRef,
@@ -7,8 +6,10 @@ import React, {
   useImperativeHandle,
 } from "react";
 import "./AudioRecorder.css";
+import { useTranslation } from "react-i18next";
 
 const AudioRecorder = forwardRef(({ onAudioReady }, ref) => {
+  const { t } = useTranslation();
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [audioURL, setAudioURL] = useState(null);
@@ -115,7 +116,7 @@ const AudioRecorder = forwardRef(({ onAudioReady }, ref) => {
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(audioChunks.current, { type: "audio/webm" });
         if (blob.size > 100 * 1024 * 1024) {
-          setError("Audio exceeds 100MB.");
+          setError(t('audio_exceeds_size'));
           return;
         }
         const url = URL.createObjectURL(blob);
@@ -138,7 +139,7 @@ const AudioRecorder = forwardRef(({ onAudioReady }, ref) => {
         });
       }, 1000);
     } catch (err) {
-      setError("Microphone access denied or error starting recording.");
+      setError(t('mic_access_error'));
     }
   };
 
@@ -152,11 +153,13 @@ const AudioRecorder = forwardRef(({ onAudioReady }, ref) => {
       <canvas ref={canvasRef} width={400} height={100} />
       {recording && (
         <div className="recording-status">
-          Recording... {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, "0")}
+          {t('recording_status')} {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, "0")}
         </div>
       )}
       {recording && (
-        <button type="button" onClick={stopRecording}>⏹ Stop Recording</button>
+        <button type="button" onClick={stopRecording}>
+          {t('stop_recording_button')}
+        </button>
       )}
       {audioURL && (
         <>

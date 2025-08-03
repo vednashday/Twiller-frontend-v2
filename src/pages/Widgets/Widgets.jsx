@@ -2,11 +2,13 @@ import React from "react";
 import "./widget.css";
 import { TwitterTimelineEmbed, TwitterTweetEmbed } from "react-twitter-embed";
 import { Search } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const Widgets = () => {
+  const { t } = useTranslation();
   return (
     <div className="widgets__widgetContainer">
-      <h2>What's Happening</h2>
+      <h2>{t('whats_happening_title')}</h2>
 
       <TwitterTweetEmbed tweetId="1942193579729785125" />
       <TwitterTweetEmbed tweetId="1940622754144801245" />

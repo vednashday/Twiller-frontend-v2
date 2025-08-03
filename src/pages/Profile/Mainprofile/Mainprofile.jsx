@@ -12,7 +12,8 @@ import axios from "axios";
 import useLoggedinuser from "../../../hooks/useLoggedinuser";
 import profImg from "../../../image/default-profile.jpg";
 import banImg from "../../../image/default-banner.png";
-import LanguageSelector from "../../../component/Language/LanguageSelector";
+import { useTranslation } from "react-i18next";
+
 
 const Mainprofile = ({ user }) => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Mainprofile = ({ user }) => {
   const [post, setpost] = useState([]);
   const [loggedinuser, setLoggedinuser, fetchLoggedInUser] = useLoggedinuser();
   const [userVersion, setUserVersion] = useState(0);
+  const { t } = useTranslation();
 
   const username = loggedinuser?.username;
 
@@ -92,12 +94,12 @@ const Mainprofile = ({ user }) => {
     <div className="mainprofcont">
       <div className="arrow_user">
         <ArrowBackIcon className="arrow-icon" onClick={() => navigate("/")} />
-        <h4 className="heading-4">{username || "Profile"}</h4>
+        <h4 className="heading-4">{username || t("Profile")}</h4>
       </div>
 
       {loading || !loggedinuser ? (
         <div className="loader-inside-main">
-          <p>Loading profile...</p>
+          <p>{t("loading_profile")}</p>
           <div className="spinner" />
         </div>
       ) : (
@@ -165,14 +167,14 @@ const Mainprofile = ({ user }) => {
                     <h3 className="heading-3">
                       {loggedinuser?.name ??
                         user?.displayName ??
-                        "Unnamed User"}
+                        t("unnamed_user")}
                     </h3>
                     <p className="usernameSection">@{loggedinuser?.username}</p>
                     {loggedinuser?.subscription && (
                       <p
                         className={`subscription-status ${loggedinuser.subscription}`}
                       >
-                        Plan: {loggedinuser.subscription.toUpperCase()}
+                         {t("plan")}: {loggedinuser.subscription.toUpperCase()}
                       </p>
                     )}
                   </div>
@@ -190,7 +192,7 @@ const Mainprofile = ({ user }) => {
                   {loggedinuser?.bio ? (
                     <p>{loggedinuser.bio}</p>
                   ) : (
-                    <p style={{ color: "#999" }}>No bio added</p>
+                    <p style={{ color: "#999" }}>{t("no_bio")}</p>
                   )}
                   <div className="locationAndLink">
                     {loggedinuser?.location ? (
@@ -198,25 +200,22 @@ const Mainprofile = ({ user }) => {
                         <MyLocationIcon /> {loggedinuser.location}
                       </p>
                     ) : (
-                      <p style={{ color: "#999" }}>No location added</p>
+                      <p style={{ color: "#999" }}>{t("no_location")}</p>
                     )}
                     {loggedinuser?.website ? (
                       <p className="subInfo link">
                         <AddLinkIcon /> {loggedinuser.website}
                       </p>
                     ) : (
-                      <p style={{ color: "#999" }}>No website added</p>
+                      <p style={{ color: "#999" }}>{t("no_website")}</p>
                     )}
                   </div>
 
-                  <div style={{ marginTop: "1rem" }}>
-                    <h4 className="tweetsText">Language Settings</h4>
-                    <LanguageSelector/>
-                  </div>
+                  
                 </div>
 
                 {/* Tweets */}
-                <h4 className="tweetsText">Tweets</h4>
+                <h4 className="tweetsText">{t("tweets")}</h4>
                 <hr />
               </div>
 

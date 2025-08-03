@@ -1,41 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useUserAuth } from "../../context/UserAuthContext"; // Import your custom hook
+import { useUserAuth } from "../../context/UserAuthContext";
+import "./LanguageSelector.css";
+import { useTranslation } from "react-i18next";
 
-const LanguageSelector = () => {
-  // Use the custom hook to get the user and token from the context
+const LanguageSelector = ({ onLanguageChange }) => {
+  const { t } = useTranslation();
   const { user, loading } = useUserAuth();
-
-  // You will need to get the ID token from the user object
   const [idToken, setIdToken] = useState(null);
-
-  useState(() => {
-    const getToken = async () => {
-      if (user) {
-        const token = await user.getIdToken();
-        setIdToken(token);
-      }
-    }
-    getToken();
-  }, [user]);
-
   const [language, setLanguage] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const getToken = async () => {
+      if (user) {
+        try {
+          const token = await user.getIdToken();
+          setIdToken(token);
+        } catch (error) {
+          console.error("Error getting ID token:", error);
+        }
+      }
+    };
+    getToken();
+  }, [user]);
 
   const sendOtp = async () => {
     if (!user || !idToken) {
-      setMessage("You must be logged in to change your language.");
+      setMessage(t("auth_error"));
       return;
     }
     if (!language) {
-      setMessage("Please select a language.");
+      setMessage(t("select_language"));
       return;
     }
-    
     setIsSubmitting(true);
     setMessage("");
 
@@ -51,10 +52,12 @@ const LanguageSelector = () => {
           },
         }
       );
-      setMessage(`OTP sent to your ${language === 'fr' ? 'email' : 'mobile number'}.`);
+      setMessage(
+        t(language === "fr" ? "otp_sent_email" : "otp_sent_phone")
+      );
       setOtpSent(true);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Error sending OTP");
+      setMessage(err.response?.data?.message || t("Error sending OTP"));
     } finally {
       setIsSubmitting(false);
     }
@@ -62,14 +65,13 @@ const LanguageSelector = () => {
 
   const verifyOtp = async () => {
     if (!user || !idToken) {
-      setMessage("You must be logged in to change your language.");
+      setMessage(t("auth_error"));
       return;
     }
     if (!otp) {
-      setMessage("Please enter the OTP.");
+      setMessage(t("enter_otp"));
       return;
     }
-    
     setIsSubmitting(true);
     setMessage("");
 
@@ -86,22 +88,19 @@ const LanguageSelector = () => {
         }
       );
       setMessage(res.data.message);
-      // Optional: Update your local app state with the new language
-      // For example, in your context, you might refetch the mongoUser
-      // or update its `preferredLang` property.
-      
-      // Reset states on success
+      if (onLanguageChange) {
+        onLanguageChange(language);
+      }
       setOtpSent(false);
       setOtp("");
       setLanguage("");
     } catch (err) {
-      setMessage(err.response?.data?.message || "OTP verification failed");
+      setMessage(err.response?.data?.message || t("OTP verification failed"));
     } finally {
       setIsSubmitting(false);
     }
   };
-  
-  // The actual language values to send to the backend
+
   const langOptions = [
     { value: "en", label: "English" },
     { value: "es", label: "Spanish" },
@@ -112,22 +111,26 @@ const LanguageSelector = () => {
   ];
 
   if (loading) {
-      return <div>Loading user data...</div>;
+    return (
+      <div className="language-selector-container">
+        <p>{t("loading_user_data")}</p>
+      </div>
+    );
   }
-  
+
   return (
-    <div className="p-6 bg-white max-w-md mx-auto rounded-lg shadow-md space-y-4">
-      <h2 className="text-xl font-bold text-gray-800">Change Language</h2>
+    <div className="language-selector-container">
+      <h2 className="selector-title">{t("change_language_title")}</h2>
       {user ? (
         <>
-          <p className="text-sm text-gray-500">Logged in as: {user.email}</p>
+          <p className="user-email-info">{t("logged_in_as")}: {user.email}</p>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="w-full px-4 py-2 border rounded"
+            className="language-input"
             disabled={otpSent || isSubmitting}
           >
-            <option value="">Select Language</option>
+            <option value="">{t("select_language_option")}</option>
             {langOptions.map((lang) => (
               <option key={lang.value} value={lang.value}>
                 {lang.label}
@@ -138,44 +141,44 @@ const LanguageSelector = () => {
           {!otpSent ? (
             <button
               onClick={sendOtp}
-              className={`w-full text-white py-2 rounded ${
-                language && !isSubmitting ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'
-              }`}
+              className={`twiller-button primary ${!language || isSubmitting ? "disabled" : ""}`}
               disabled={!language || isSubmitting}
             >
-              {isSubmitting ? "Sending..." : "Send OTP"}
+              {isSubmitting ? t("sending_otp") : t("send_otp")}
             </button>
           ) : (
             <>
-              <p className="text-sm text-gray-600">
-                An OTP has been sent. Please check your {language === 'fr' ? 'email' : 'mobile number'}.
+              <p className="user-email-info">
+                {t(language === "fr" ? "otp_sent_email" : "otp_sent_phone")}
               </p>
               <input
                 type="text"
-                placeholder="Enter OTP"
+                placeholder={t("enter_otp_placeholder")}
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="w-full px-4 py-2 border rounded"
+                className="language-input"
                 disabled={isSubmitting}
               />
               <button
                 onClick={verifyOtp}
-                className={`w-full text-white py-2 rounded ${
-                  otp && !isSubmitting ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
-                }`}
+                className={`twiller-button primary ${!otp || isSubmitting ? "disabled" : ""}`}
                 disabled={!otp || isSubmitting}
               >
-                {isSubmitting ? "Verifying..." : "Verify OTP"}
+                {isSubmitting ? t("verifying_otp") : t("verify_otp")}
               </button>
             </>
           )}
 
           {message && (
-            <div className={`text-center text-sm ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>{message}</div>
+            <div className={`message ${message.includes("success") ? "success" : "error"}`}>
+              {message}
+            </div>
           )}
         </>
       ) : (
-        <p className="text-center text-red-500">Please log in to change your language.</p>
+        <p className="user-email-info">
+          {t("not_logged_in_message")}
+        </p>
       )}
     </div>
   );

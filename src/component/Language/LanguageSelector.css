@@ -1,0 +1,79 @@
+/* LanguageSelector.css - Light Theme */
+
+.language-selector-container {
+  background-color: #fff;
+  color: #14171a;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: none; /* Removed the box shadow */
+  border: none; /* Removed the border */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: sans-serif;
+}
+
+.selector-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.user-email-info {
+  font-size: 0.875rem;
+  color: #657786;
+}
+
+.language-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #f5f8fa;
+  color: #14171a;
+  border-radius: 0.5rem;
+  border: 1px solid #e1e8ed;
+}
+
+.language-input:focus {
+  outline: none;
+  border-color: #1da1f2;
+}
+
+.twiller-button {
+  width: 100%;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.75rem;
+  border-radius: 9999px; /* rounded-full */
+  transition-property: background-color;
+  transition-duration: 200ms;
+  border: none;
+  cursor: pointer;
+}
+
+.twiller-button.primary {
+  background-color: #1da1f2;
+}
+
+.twiller-button.primary:hover {
+  background-color: #1a91da;
+}
+
+.twiller-button.disabled {
+  background-color: #ccd6dd;
+  color: #657786;
+  cursor: not-allowed;
+}
+
+.message {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding-top: 0.5rem;
+}
+
+.message.success {
+  color: #17bf63; /* A twitter-green shade */
+}
+
+.message.error {
+  color: #e0245e; /* A twitter-red shade */
+}

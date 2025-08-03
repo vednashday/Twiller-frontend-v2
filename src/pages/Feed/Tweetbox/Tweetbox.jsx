@@ -9,8 +9,11 @@ import AudioModal from "../../../component/AudioModal";
 import WaveformTweet from "../../../component/WaveformTweet";
 import { toast } from "react-toastify";
 import profImg from "../../../image/default-profile.jpg";
+import { useTranslation } from "react-i18next";
 
 export default function Tweetbox() {
+  const { t } = useTranslation();
+  
   const [post, setPost] = useState("");
   const [imageurl, setImageUrl] = useState("");
   const [isLoadingImage, setLoadingImage] = useState(false);
@@ -78,7 +81,7 @@ export default function Tweetbox() {
     e.preventDefault();
 
     if (!user || !mongoUser) {
-      toast.error("User not authenticated or data not loaded.");
+      toast.error(t('auth_error'));
       return;
     }
 
@@ -97,7 +100,7 @@ export default function Tweetbox() {
         );
         audioUrl = res.data.secure_url;
       } catch (err) {
-        toast.error("Failed to upload audio.");
+        toast.error(t('audio_upload_error'));
         return;
       }
     }
@@ -118,16 +121,16 @@ export default function Tweetbox() {
         headers: { Authorization: `Bearer ${idToken}` },
       });
 
-      toast.success("Tweet posted!");
+      toast.success(t('tweet_success'));
       setPost("");
       setImageUrl("");
       setRecordedAudioBlob(null);
       setRecordedAudioURL(null);
     } catch (err) {
       if (err.response?.status === 403) {
-        toast.error("Tweet limit reached for your current plan.");
+        toast.error(t('tweet_limit_error'));
       } else {
-        toast.error("Tweet post failed. Try again later.");
+        toast.error(t('tweet_fail_error'));
       }
       console.error("Tweet post failed:", err);
     }
@@ -144,7 +147,7 @@ export default function Tweetbox() {
           <textarea
             value={post}
             onChange={(e) => setPost(e.target.value)}
-            placeholder="What is happening?!"
+            placeholder={t('tweet_placeholder')}
             className="tweetbox-input"
             rows={3}
             required
@@ -179,7 +182,7 @@ export default function Tweetbox() {
                   if (isWithinUploadTime()) {
                     setAudioModalOpen(true);
                   } else {
-                    toast.error("Audio uploads are allowed only from 2 PM to 7 PM IST");
+                    toast.error(t('audio_upload_time_error'));
                   }
                 }}
               >
@@ -189,13 +192,13 @@ export default function Tweetbox() {
 
             <div className="tweetbox-submit">
               {tweetsLeft !== null && tweetsLeft !== Infinity && (
-                <p className="tweet-limit-info">Tweets left: {tweetsLeft}</p>
+                <p className="tweet-limit-info">{t('tweets_left')}{tweetsLeft}</p>
               )}
               {tweetsLeft === Infinity && (
-                <p className="tweet-limit-info">Unlimited tweets</p>
+                <p className="tweet-limit-info">{t('unlimited_tweets')}</p>
               )}
               <button type="submit" className="tweetbox-button">
-                Tweet
+                {t('tweet_button_text')}
               </button>
             </div>
           </div>
@@ -212,7 +215,7 @@ export default function Tweetbox() {
           setRecordedAudioURL(url);
         }}
         email={email}
-        user={mongoUser}
+        user={user} 
       />
     </div>
   );

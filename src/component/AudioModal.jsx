@@ -29,6 +29,7 @@ export default function AudioModal({ open, onClose, onAudioFinalized, email, use
       if (data.success) setOtpSent(true);
       toast.success("OTP sent to your email!");
     } catch (err) {
+      console.log(err,"error");
       toast.error("Failed to send OTP");;
     }
   };

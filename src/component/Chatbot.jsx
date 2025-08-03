@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { useTranslation } from "react-i18next";
 
 function Chatbot() {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -33,13 +35,13 @@ function Chatbot() {
       } else {
         setMessages((prev) => [
           ...prev,
-          { type: "bot", text: data.message || "No tweets found." },
+          { type: "bot", text: data.message || t("no_tweets_found") },
         ]);
       }
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { type: "bot", text: "Something went wrong." },
+        { type: "bot", text: t("something_went_wrong") },
       ]);
     }
 
@@ -71,7 +73,7 @@ function Chatbot() {
       setMessages([
         {
           type: "bot",
-          text: "Hey there! I am your chatbot ask me about anything and i will fetch that tweet from the database",
+          text: t("chatbot_intro_message"),
           isIntro: true,
         },
       ]);
@@ -121,7 +123,7 @@ function Chatbot() {
                         {tweet.audio && (
                           <audio controls className="tweet-audio">
                             <source src={tweet.audio} type="audio/mpeg" />
-                            Your browser does not support the audio element.
+                            {t('unsupported_audio')}
                           </audio>
                         )}
                       </div>
@@ -129,7 +131,7 @@ function Chatbot() {
                     {!msg.showAll && msg.tweets.length > 2 && (
                       <div className="chat-message bot-msg see-more">
                         <button onClick={() => handleSeeMore(i)}>
-                          See more
+                          {t('see_more')}
                         </button>
                       </div>
                     )}
@@ -155,9 +157,9 @@ function Chatbot() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="Ask about cricket, tech, finance..."
+              placeholder={t('input_placeholder')}
             />
-            <button onClick={handleSend}>Send</button>
+            <button onClick={handleSend}>{t('send_button')}</button>
           </div>
         </div>
       )}

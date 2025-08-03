@@ -3,17 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GoogleButton from "react-google-button";
 import { useUserAuth } from "../../context/UserAuthContext";
-import "./Login.css"; 
+import { useTranslation } from "react-i18next";
+import "./Login.css";
 
 const Signup = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [preferredLang, setPreferredLang] = useState("en"); // New state for language, with English as default
+  const [preferredLang, setPreferredLang] = useState("en");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
 
   const { signUp, googleSignIn } = useUserAuth();
   const navigate = useNavigate();
@@ -23,20 +26,23 @@ const Signup = () => {
     setError("");
     setIsSubmitting(true);
 
-    try {
-      // 1. Create user in Firebase Auth.
-      const userCredential = await signUp(email, password, name);
+    const phoneRegex = /^\+\d{1,15}$/;
+    if (phone.trim() !== "" && !phoneRegex.test(phone)) {
+      setPhoneError(t("invalid_phone"));
+      setIsSubmitting(false);
+      return;
+    }
 
-      // 2. Extract Firebase user details
+    try {
+      const userCredential = await signUp(email, password, name);
       const firebaseUser = userCredential.user;
 
-      // 3. Register user to MongoDB with all details, including the selected language
       const user = {
         username,
         name,
         email,
         phone,
-        preferredLang: preferredLang, // Use the new state here
+        preferredLang,
       };
 
       const response = await fetch("https://twiller-v2.onrender.com/register", {
@@ -72,7 +78,6 @@ const Signup = () => {
     }
   };
 
-  // Language options to populate the dropdown
   const langOptions = [
     { value: "en", label: "English" },
     { value: "es", label: "Spanish" },
@@ -87,37 +92,45 @@ const Signup = () => {
       <div className="form-container">
         <div className="form-box">
           <TwitterIcon className="Twittericon" style={{ color: "skyblue", fontSize: "40px" }} />
-          <h2 className="heading">Happening now</h2>
-          <h3 className="heading1">Join Twiller today</h3>
+          <h2 className="heading">{t("happening_now")}</h2>
+          <h3 className="heading1">{t("join_twiller")}</h3>
           {error && <p className="errorMessage">{error}</p>}
-          <form onSubmit={handlesubmit}>
+          <form className="form-input-cont" onSubmit={handlesubmit}>
             <input
               className="display-name"
               type="text"
-              placeholder="@username"
+              placeholder={t("username_placeholder")}
               onChange={(e) => setUsername(e.target.value)}
               value={username}
             />
             <input
               className="display-name"
               type="text"
-              placeholder="Enter Full Name"
+              placeholder={t("full_name_placeholder")}
               onChange={(e) => setName(e.target.value)}
               value={name}
             />
             <input
               className="email"
               type="email"
-              placeholder="Email Address"
+              placeholder={t("email_placeholder")}
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
             <input
-              className="phone"
+              className="display-name"
               type="tel"
-              placeholder="Phone Number (e.g., +11234567890)"
+              placeholder={t("phone_placeholder")}
               onChange={(e) => setPhone(e.target.value)}
               value={phone}
+              pattern="^\+\d{1,15}$"
+            />
+            <input
+              className="password"
+              type="password"
+              placeholder={t("password_placeholder")}
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
             />
             <select
               className="language-selector"
@@ -130,16 +143,9 @@ const Signup = () => {
                 </option>
               ))}
             </select>
-            <input
-              className="password"
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
             <div className="btn-login">
               <button type="submit" className="btn" disabled={isSubmitting}>
-                {isSubmitting ? "Signing up..." : "Sign Up"}
+                {isSubmitting ? t("signing_up") : t("sign_up")}
               </button>
             </div>
           </form>
@@ -148,7 +154,7 @@ const Signup = () => {
             <GoogleButton className="g-btn" type="light" onClick={handlegooglesignin} />
           </div>
           <div>
-            Already have an account?
+            {t("already_have_account")}
             <Link
               to="/login"
               style={{
@@ -158,7 +164,7 @@ const Signup = () => {
                 marginLeft: "5px",
               }}
             >
-              Log In
+              {t("login")}
             </Link>
           </div>
         </div>
